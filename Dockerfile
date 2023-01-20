@@ -54,13 +54,6 @@ RUN echo "export CARLA_AUTOWARE_CONTENTS=~/autoware-contents" >> .bashrc \
 
 
 # my_ws environment
-
 RUN echo "source ~/autoware-contents/my_ws/devel/setup.bash" >> .bashrc
 
-
-
-
-
-
 CMD ["/bin/bash"]
-
