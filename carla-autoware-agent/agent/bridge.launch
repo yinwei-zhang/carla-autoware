@@ -36,14 +36,14 @@
     remap carla lidar to autoware.
     @todo: to reduce load, Autoware should directly use the Carla-topic.
   -->
-  <node pkg='topic_tools' type='relay' name='points_relay' args='/carla/$(arg role_name)/lidar/lidar1/point_cloud /points_raw'/>
+  <node pkg='topic_tools' type='relay' name='points_relay' args='/points_raw_error /points_raw'/>
 
   <!--
     # camera #
     remap carla front camera to autoware
     @todo: to reduce load, Autoware should directly use the Carla-topic.
   -->
-  <node pkg='topic_tools' type='relay' name='imag_relay' args='/carla/$(arg role_name)/camera/rgb/front/image_color /image_raw'/>
+  <node pkg='topic_tools' type='relay' name='imag_relay' args='/image_error /image_raw'/>
   <node pkg='topic_tools' type='relay' name='info_relay' args='/carla/$(arg role_name)/camera/rgb/front/camera_info /camera_info'/>
 
   <!--

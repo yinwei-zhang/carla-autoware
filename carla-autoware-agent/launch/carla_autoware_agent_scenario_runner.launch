@@ -6,13 +6,13 @@
   -->
   <arg name='host' default='localhost'/>
   <arg name='port' default='2000'/>
-  <arg name='town' default='Town02'/>
+  <arg name='town' default='Town01'/>
 
   <arg name='agent' default='agent'/>
 
   <arg name='role_name' default='ego_vehicle'/>
   <!-- use comma separated format "x,y,z,roll,pìtch,yaw" -->
-  <arg name='spawn_point' default='193.78,218.79,0.5,0.0,0.0,90.0'/>
+  <arg name='spawn_point' default=''/>
   <arg name='synchronous_mode' default='True'/>
 
   <arg name='sensor_definition_file' default='$(find carla_autoware_agent)/$(arg agent)/config/sensors.json'/>
@@ -55,33 +55,27 @@
 
   <!--
     ####################
-    ## Autoware agent ##
-    ####################
-  -->
-  <include file='$(find carla_autoware_agent)/$(arg agent)/my_agent.launch'>
-    <arg name='town' value='$(arg town)'/>
-    <arg name='vehicle_length' value='$(arg vehicle_length)'/>
-    <arg name='vehicle_width' value='$(arg vehicle_width)'/>
-    <arg name='use_ground_truth_localization' value='$(arg use_ground_truth_localization)'/>
-    <arg name='use_ground_truth_detections' value='$(arg use_ground_truth_detections)'/>
-    <arg name='use_manual_control' value='$(arg use_manual_control)'/>
-  </include>
-
-
-  <!--
-    ####################
     ## Image error    ##
     ####################
   -->
-  <include file='$(find image_error_injection)/launch/rgb_error_injection.launch'>
-  </include>
-  <include file='$(find image_error_injection)/launch/LIDAR_error_injection.launch'>
-  </include>
-  <include file='$(find image_error_injection)/launch/depth_error_injection.launch'>
-  </include>
-  <include file='$(find image_error_injection)/launch/spawn_objects.launch'>
+  <include file='$(find image_error_injection)/launch/error_injection.launch'>
   </include>
 
+  <!--
+    ####################
+    ## set goal       ##
+    ####################
+  -->
+  <arg name="my_goal" default="'{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: ''}, pose: {position: {x: 300.0, y: -132.0, z: 0.0}, orientation:{x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}'"/>
+  <node pkg='rostopic' type='rostopic' name='set_goal'
+        args="pub /move_base_simple/goal geometry_msgs/PoseStamped $(arg my_goal)"/>
+<!--
+    ####################
+    ## rosbag       ##
+    ####################
+  -->
+  <node pkg="rosbag" type="record" name="rosbag_noisefree"
+       args="record -O experiment_bag -e /ground_truth_bbox_cam /ground_truth_bbox_lidar /detection/(.*)/objects /image_(.*) /lidar_(.*) /carla/ego_vehicle/(.*)  /semantics/costmap_generator/occupancy_grid /points_no_ground_(.*)"/>
 
   <!--
     ###################
@@ -90,23 +84,5 @@
   -->
   <arg name='rvizconfig' default='$(find carla_autoware_agent)/$(arg agent)/rviz/config.rviz'/>
   <node name='rviz' pkg='rviz' type='rviz' args='-d $(arg rvizconfig)'/>
-
-  <!--
-    ####################
-    ## set goal       ##
-    ####################
-  -->
-  <arg name="my_goal" default="'{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: ''}, pose: {position: {x: 193.78, y: -118.79, z: 0.5}, orientation:{x: 0.0, y: 0.0, z: 0.7071, w: 0.7071}}}'"/>
-  <node pkg='rostopic' type='rostopic' name='set_goal'
-        args="pub /move_base_simple/goal geometry_msgs/PoseStamped $(arg my_goal)"/>
-
-  <!--
-    ####################
-    ## rosbag       ##
-    ####################
-  -->
-  <node pkg="rosbag" type="record" name="rosbag_noisefree"
-       args="record -O bag_noise_11182021 -e /ground_truth_bbox /detection/(.*)/objects /image_(.*) /carla/ego_vehicle/(.*)"/>
-
 
 </launch>

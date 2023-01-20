@@ -13,7 +13,7 @@
     <arg name='topic_twist_stamped' value='/estimate_twist' />
   </include>
 
-  <!-- 
+  <!--
     # decision_maker #
   -->
   <include file='$(find decision_maker)/launch/decision_maker.launch'>
@@ -36,8 +36,8 @@
   <group>
     <remap from='/lane_waypoints_array' to='/based/lane_waypoints_raw'/>
     <include file='$(find op_global_planner)/launch/op_global_planner.launch'>
-      <arg name='pathDensity' value='0.75' /> 
-      <arg name='enableSmoothing' value='true' /> 
+      <arg name='pathDensity' value='0.75' />
+      <arg name='enableSmoothing' value='true' />
       <arg name='enableLaneChange' value='false' />
       <arg name='enableRvizInput' value='true' />
       <arg name='enableReplan' value='true' />
@@ -46,7 +46,7 @@
     </include>
   </group>
 
-  <!-- 
+  <!--
     # waypoint replanner #
     to reduce velocity on curves
     Out:  /based/lane_waypoints_array [autoware_msgs::LaneArray]

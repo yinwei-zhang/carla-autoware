@@ -1,6 +1,6 @@
 <launch>
 
-  <!-- 
+  <!--
     # Ray ground filter #
     filter points below ground
     In:  /points_raw [sensor_msgs::PointCloud2]
@@ -8,7 +8,7 @@
     Out: /points_ground [sensor_msgs::PointCloud2]
   -->
   <include file='$(find points_preprocessor)/launch/ray_ground_filter.launch'>
-    <arg name='input_point_topic' value='/points_raw'/> 
+    <arg name='input_point_topic' value='/points_raw'/>
 
     <arg name='clipping_height' value='3.5'/> <!-- Remove points above this height value -->
     <arg name='min_point_distance' value='0.50'/> <!-- Removes points closer than this distance from the sensor origin -->

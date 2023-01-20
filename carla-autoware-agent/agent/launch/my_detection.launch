@@ -1,6 +1,6 @@
 <launch>
 
-  <!-- 
+  <!--
     # lidar detector #
     In:  /points_no_ground [sensor_msgs::PointCloud2]
     Out: /cluster_centroids [autoware_msgs::Centroids]
@@ -12,7 +12,7 @@
     Out: /points_lanes [sensor_msgs::PointCloud2]
   -->
   <include file='$(find lidar_euclidean_cluster_detect)/launch/lidar_euclidean_cluster_detect.launch'>
-    <arg name='points_node' value='/points_no_ground'/>
+    <arg name='points_node' value='/points_no_ground_error_to_euclidean'/>
     <arg name='use_gpu' value='true'/>
 
     <arg name='remove_ground' value='false'/>

@@ -4,18 +4,18 @@
     # costmap_generator #
     This node reads PointCloud and/or DetectedObjectArray and creates an OccupancyGrid and GridMap.
     In:  /points_no_ground [sensor_msgs::PointCloud2]
-    In:  /prediction/motion_predictor/objects [autoware_msgs::DetectedObjectArray] 
+    In:  /prediction/motion_predictor/objects [autoware_msgs::DetectedObjectArray]
     Out: /semantics/costmap [grid_map_msgs::GridMap]
     Out: /semantics/costmap_generator/occupancy_grid [nav_msgs::OccupancyGrid]
   -->
   <include file='$(find costmap_generator)/launch/costmap_generator.launch'>
     <arg name='use_points' default='true' />
-    <arg name='use_wayarea' default='true' />
+    <arg name='use_wayarea' default='false' />
     <arg name='use_objects_box' default='true' />
     <arg name='use_objects_convex_hull' default='false' />
 
     <arg name='objects_input' default='/prediction/motion_predictor/objects' />
-    <arg name='points_input' default='/points_no_ground' />
+    <arg name='points_input' default='/points_no_ground_error_to_costmap' />
   </include>
 
   <!--
@@ -80,7 +80,7 @@
         args='pub -l /config/waypoint_follower autoware_config_msgs/ConfigWaypointFollower
         "{ header: auto, param_flag: 0, velocity: 6.0, lookahead_distance: 4.0, lookahead_ratio: 2.0, minimum_lookahead_distance: 6.0, displacement_threshold: 0.0, relative_angle_threshold: 0.0 }"'/>
 
-  <include file='$(find pure_pursuit)/launch/pure_pursuit.launch'/> 
+  <include file='$(find pure_pursuit)/launch/pure_pursuit.launch'/>
 
   <!--
     # twist_filter #
@@ -92,7 +92,7 @@
   <include file='$(find twist_filter)/launch/twist_filter.launch'>
   </include>
 
-  <!-- 
+  <!--
     # waypoint visualizer #
     to visualize the waypoints in rviz
     In:  /closest_waypoint [std_msgs::Int32]
@@ -104,7 +104,7 @@
   -->
   <node pkg='waypoint_maker' type='waypoint_marker_publisher' name='waypoint_marker_publisher' output='screen'/>
 
-  <!-- 
+  <!--
     # waypoint velocity visualizer #
     to visualize the waypoints velocity in rviz
     In:  /current_pose [geometry_msgs::PoseStamped]
